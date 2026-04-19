@@ -1,9 +1,22 @@
-FILE=main.c
-OUT=main
+CFLAGS = -Wall -Wextra -Werror -g
+SRCS    = 
+OBJS = $(SRCS:.c=.o)
+NAME = codexion
 
+all: $(NAME)
 
-all: 
-	cc -g -pthread $(FILE) -o $(OUT) && ./$(OUT)
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
-compile:
-	cc -g -pthread $(FILE) -o $(OUT)
+%.o: %.c codexion.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJS)
+
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re

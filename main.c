@@ -1,22 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <unistd.h>
+#include <sys/time.h>
 
 
-void* routine(){
-    printf("beginning\n");
-    // sleep(3);
-    printf("ending\n");
+int primes[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
+
+void *routine(void *arg){
+    int index = *(int*)arg;
+    printf("%d ", primes[index]);
+    free(arg);
 }
 
-int main(int ac, char** av){
-    pthread_t t1, t2;
+int main(){
+    pthread_t th[10];
 
-    pthread_create(&t1, NULL, &routine, NULL);
-    pthread_create(&t2, NULL, &routine, NULL);
-    pthread_join(t1, NULL);
-    pthread_join(t2, NULL);
+    for (int i = 0; i < 10; i++){
+        int *a = malloc(sizeof(int));
+        *a = i;
+        if(pthread_create(&th[i], NULL, &routine, a)){
+            perror("create failed");
+        }
+    }
 
-    return 0;
+    for(int i = 0; i < 10; i++){
+        if(pthread_join(th[i], NULL)){
+            perror("join failed");
+        }
+    }
+    printf("\n");
 }

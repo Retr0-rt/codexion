@@ -26,10 +26,11 @@ void action_compile(t_coder *coder)
     if(!safe_stop_check(coder->sys))
         printf("%lld %d is compiling\n", relative_time, coder->id);
     pthread_mutex_unlock(&coder->sys->log_mutex);
-    ft_musleep(coder->sys->time_to_compile, coder->sys);
+    ft_msleep(coder->sys->time_to_compile, coder->sys);
 }
 
-void action_debug(t_coder *coder){
+void action_debug(t_coder *coder)
+{
     long long relative_time;
 
     relative_time = get_relative_time(coder->sys->start_time);
@@ -41,7 +42,8 @@ void action_debug(t_coder *coder){
     ft_msleep(coder->sys->time_to_debug, coder->sys);
 }
 
-void action_refactor(t_coder *coder){
+void action_refactor(t_coder *coder)
+{
     long long relative_time;
 
     relative_time = get_relative_time(coder->sys->start_time);
@@ -53,16 +55,36 @@ void action_refactor(t_coder *coder){
     ft_msleep(coder->sys->time_to_refactor, coder->sys);
 }
 
-void *coder_routine(void *arg){
+void *coder_routine(void *arg)
+{
     t_coder *coder = (t_coder *)arg;
     wait_for_start(coder->sys);
     while (!safe_stop_check(coder->sys))
     {
-        //take_dongles(coder);
+        take_dongles(coder);
         action_compile(coder);
-        //drop_dongles(coder);
+        drop_dongles(coder);
         action_debug(coder);
         action_refactor(coder);
     }
+    return (NULL);
+}
+
+void *monitoring_routine(void *arg)
+{
+    t_system *sys = (t_system *)arg;
+
+    // Let the simulation run freely for 3 seconds
+    ft_msleep(10000, sys);
+    // Flip the global kill switch
+    pthread_mutex_lock(&sys->state_mutex);
+    sys->stop_flag = 1;
+    pthread_mutex_unlock(&sys->state_mutex);
+
+    // Print the test conclusion
+    pthread_mutex_lock(&sys->log_mutex);
+    printf("--- DUMMY MONITOR: TEST FINISHED AFTER 3 SECONDS ---\n");
+    pthread_mutex_unlock(&sys->log_mutex);
+
     return (NULL);
 }

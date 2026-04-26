@@ -69,9 +69,21 @@ int	init_mutexes(t_system *sys);
 int	init_coders(t_system *sys);
 int	start_simulation(t_system *sys);
 int	init_all(t_system *sys, int ac, char **av);
+/* --- simulation.c --- */
+int safe_stop_check(t_system *sys);
+void action_compile(t_coder *coder);
+void action_debug(t_coder *coder);
+void action_refactor(t_coder *coder);
+void *coder_routine(void *arg);
+void *monitoring_routine(void *arg);
+/* --- cleanup.c --- */
+void cleanup_system(t_system *sys);
+/* --- resources.c --- */
+void take_dongles(t_coder *coder);
+void drop_dongles(t_coder *coder);
 /* --- utils.c --- */
 long long get_relative_time(long long start_time);
 void ft_msleep(int time_to_sleep, t_system *sys);
-int wait_for_start(t_system *sys);
+void wait_for_start(t_system *sys);
 
 #endif

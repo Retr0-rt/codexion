@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 09:36:54 by airkha            #+#    #+#             */
-/*   Updated: 2026/04/22 11:42:08 by airkha           ###   ########.fr       */
+/*   Updated: 2026/04/25 23:48:19 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	init_system_args(t_system *sys, int ac, char **av)
 		sys->scheduler = SCHED_FIF;
 	else
 		sys->scheduler = SCHED_EDF;
+	sys->ready_flag = 0;
 	return (0);
 }
 
@@ -46,10 +47,7 @@ int	init_mutexes(t_system *sys)
 	while (i < sys->nb_coders)
 	{
 		if (pthread_mutex_init(sys->dongles + i, NULL) != 0)
-		{
-			printf("error initailizing the dongle %d", i + 1);
 			return (-1);
-		}
 		i++;
 	}
 	if (pthread_mutex_init(&sys->log_mutex, NULL) != 0
@@ -71,6 +69,8 @@ int	init_coders(t_system *sys)
 	i = 0;
 	while (i < sys->nb_coders)
 	{
+		if (pthread_mutex_init(&sys->coders[i].coder_mutex, NULL) != 0)
+			return (-1);
 		sys->coders[i].id = i + 1;
 		// we will give last_compile_start 0 for now since the coder didnt compile anytime and 
 		// action_compile function will overwrite that 0
@@ -96,15 +96,16 @@ int	start_simulation(t_system *sys)
 			return (-1);
 		i++;
 	}
-	if (pthread_create(&sys->monitor_thread, NULL, &monitoring_routine,
-			(void *)sys))
-		return (-1);
 	pthread_mutex_lock(&sys->state_mutex);
 	sys->start_time = get_relative_time(0);
+	sys->stop_flag = 0;
 	sys->ready_flag = 1;
 	pthread_cond_broadcast(&sys->start_gun_cv);
 	pthread_mutex_unlock(&sys->state_mutex);
-
+	
+	if (pthread_create(&sys->monitor_thread, NULL, &monitoring_routine,
+			(void *)sys))
+		return (-1);
 	return (0);
 }
 
@@ -118,18 +119,5 @@ int	init_all(t_system *sys, int ac, char **av)
 		return (-1);
 	if (start_simulation(sys) != 0)
 		return (-1);
-	return (0);
-}
-
-
-void					*coder_routine(void *arg){
-	t_coder *coder = (t_coder *)arg;
-	printf("%d ", coder->id);
-	return (0);
-}
-
-void					*monitoring_routine(void *arg){
-	t_system *sys = (t_system *)arg;
-	printf("%lld ", sys->start_time);
 	return (0);
 }

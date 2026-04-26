@@ -26,10 +26,11 @@ void ft_msleep(int time_to_sleep, t_system *sys)
     }
 }
 
-int wait_for_start(t_system *sys)
+void wait_for_start(t_system *sys)
 {
     pthread_mutex_lock(&sys->state_mutex);
-    while (&sys->ready_flag == 0){
+    while (sys->ready_flag == 0)
+    {
         pthread_cond_wait(&sys->start_gun_cv, &sys->state_mutex);
     }
     pthread_mutex_unlock(&sys->state_mutex);

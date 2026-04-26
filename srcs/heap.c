@@ -79,5 +79,4 @@ int heap_pop(t_heap *heap)
     }
     destroy_node(&heap->array[heap->size]);
     heap->size--;
-    
 }

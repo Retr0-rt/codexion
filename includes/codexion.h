@@ -6,6 +6,7 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <string.h>
+# include <unistd.h>
 
 # define SCHED_FIF 0
 # define SCHED_EDF  1
@@ -66,6 +67,7 @@ int	init_mutexes(t_system *sys);
 int	init_coders(t_system *sys);
 int	start_simulation(t_system *sys);
 int	init_all(t_system *sys, int ac, char **av);
-
-
+/* --- utils.c --- */
+long long get_relative_time(long long start_time);
+void ft_msleep(int time_to_sleep);
 #endif

@@ -52,8 +52,9 @@ int	init_mutexes(t_system *sys)
 		}
 		i++;
 	}
-	if (pthread_mutex_init(&sys->log_mutex, NULL)
-		|| pthread_mutex_init(&sys->monitor_mutex, NULL) != 0)
+	if (pthread_mutex_init(&sys->log_mutex, NULL) != 0
+		|| pthread_mutex_init(&sys->state_mutex, NULL) != 0
+		|| pthread_cond_init(&sys->start_gun_cv, NULL) != 0)
 		return (-1);
 	return (0);
 }
@@ -86,10 +87,7 @@ int	init_coders(t_system *sys)
 int	start_simulation(t_system *sys)
 {
 	int				i;
-	struct timeval	tv;
 
-	gettimeofday(&tv, NULL);
-	sys->start_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	i = 0;
 	while (i < sys->nb_coders)
 	{
@@ -101,6 +99,12 @@ int	start_simulation(t_system *sys)
 	if (pthread_create(&sys->monitor_thread, NULL, &monitoring_routine,
 			(void *)sys))
 		return (-1);
+	pthread_mutex_lock(&sys->state_mutex);
+	sys->start_time = get_relative_time(0);
+	sys->ready_flag = 1;
+	pthread_cond_broadcast(&sys->start_gun_cv);
+	pthread_mutex_unlock(&sys->state_mutex);
+
 	return (0);
 }
 

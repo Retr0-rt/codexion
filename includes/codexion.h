@@ -28,12 +28,13 @@ typedef struct s_system
 	/* --- 2. Simulation State --- */
 	long long start_time; /* Timestamp when threads launch */
 	int stop_flag;        /* 1 if someone burns out or goal met */
+	int ready_flag;
 	int finished_coders;  /* Tracks how many met req_compiles */
-
+	pthread_cond_t start_gun_cv;
 	/* --- 3. Shared Resource Mutexes --- */
 	pthread_mutex_t *dongles;      /* Array: one mutex per dongle */
 	pthread_mutex_t log_mutex;     /* Protects printf output */
-	pthread_mutex_t monitor_mutex; /* Protects reads/writes to stop_flag */
+	pthread_mutex_t state_mutex; /* Protects reads/writes to stop_flag */
 
 	/* --- 4. The Scheduler (FIFO/EDF) --- */
 	void *heap;                   /* Pointer to your Priority Queue */
@@ -50,6 +51,7 @@ typedef struct s_system
 struct					s_coder
 {
 	pthread_t			thread_id;
+	pthread_mutex_t		coder_mutex;
 	int id;                       /* 1 to N */
 	long long last_compile_start; /* Timestamp of last compile */
 	int compiles_done;            /* How many times this coder compiled */
@@ -69,5 +71,7 @@ int	start_simulation(t_system *sys);
 int	init_all(t_system *sys, int ac, char **av);
 /* --- utils.c --- */
 long long get_relative_time(long long start_time);
-void ft_msleep(int time_to_sleep);
+void ft_msleep(int time_to_sleep, t_system *sys);
+int wait_for_start(t_system *sys);
+
 #endif

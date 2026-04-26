@@ -22,7 +22,9 @@ void action_compile(t_coder *coder)
     pthread_mutex_unlock(&coder->coder_mutex);
 
     pthread_mutex_lock(&coder->sys->log_mutex);
-    printf("%lld %d is compiling\n", relative_time, coder->id);
+    // no coder can print any logs after someone burnout
+    if(!safe_stop_check(coder->sys))
+        printf("%lld %d is compiling\n", relative_time, coder->id);
     pthread_mutex_unlock(&coder->sys->log_mutex);
     ft_musleep(coder->sys->time_to_compile, coder->sys);
 }
@@ -33,7 +35,8 @@ void action_debug(t_coder *coder){
     relative_time = get_relative_time(coder->sys->start_time);
 
     pthread_mutex_lock(&coder->sys->log_mutex);
-    printf("%lld %d is debugging\n", relative_time, coder->id);
+    if(!safe_stop_check(coder->sys))
+        printf("%lld %d is debugging\n", relative_time, coder->id);
     pthread_mutex_unlock(&coder->sys->log_mutex);
     ft_msleep(coder->sys->time_to_debug, coder->sys);
 }
@@ -44,7 +47,8 @@ void action_refactor(t_coder *coder){
     relative_time = get_relative_time(coder->sys->start_time);
 
     pthread_mutex_lock(&coder->sys->log_mutex);
-    printf("%lld %d is refactoring\n", relative_time, coder->id);
+    if(!safe_stop_check(coder->sys))
+        printf("%lld %d is refactoring\n", relative_time, coder->id);
     pthread_mutex_unlock(&coder->sys->log_mutex);
     ft_msleep(coder->sys->time_to_refactor, coder->sys);
 }

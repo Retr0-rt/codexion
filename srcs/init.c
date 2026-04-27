@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 09:36:54 by airkha            #+#    #+#             */
-/*   Updated: 2026/04/27 17:49:50 by airkha           ###   ########.fr       */
+/*   Updated: 2026/04/27 22:53:17 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	init_coders(t_system *sys)
 		sys->coders[i].left_dongle_id = i;
 		sys->coders[i].right_dongle_id = (i + 1) % sys->nb_coders;
 		sys->coders[i].sys = sys;
+		sys->coders[i].compiles_done = 0;
 		i++;
 	}
 	return (0);

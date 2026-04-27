@@ -21,7 +21,7 @@ void acquire_dongle(t_coder *coder, t_dongle *dongle)
     pthread_mutex_lock(&dongle->mutex);
     heap_push(dongle->queue, coder->id, priority);
     while(!safe_stop_check(coder->sys) &&
-        heap_peek(dongle->queue) != coder->id || dongle->is_taken == 1)
+        (heap_peek(dongle->queue) != coder->id || dongle->is_taken == 1))   
         pthread_cond_wait(&dongle->cond, &dongle->mutex);
     if (safe_stop_check(coder->sys))
     {
@@ -52,6 +52,8 @@ void take_dongles(t_coder *coder)
         high_id_dongle = &coder->sys->dongles[coder->left_dongle_id];
     }
     acquire_dongle(coder, low_id_dongle);
+    if (safe_stop_check(coder->sys))
+        return ;
     acquire_dongle(coder, high_id_dongle);
 }
 
@@ -66,9 +68,6 @@ void release_dongle(t_coder *coder, t_dongle *dongle)
 }
 void drop_dongles(t_coder *coder)
 {
-    t_dongle *right_dongle;
-    t_dongle *left_dongle;
-    
 
     release_dongle(coder, &coder->sys->dongles[coder->left_dongle_id]);
     release_dongle(coder, &coder->sys->dongles[coder->right_dongle_id]);

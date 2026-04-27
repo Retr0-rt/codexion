@@ -7,8 +7,7 @@ SRCS_DIR    = srcs
 INCS_DIR    = includes
 OBJS_DIR    = objs
 
-SRCS_FILES  = main.c init.c simulation.c resources.c utils.c cleanup.c heap.c
-HEADERS = $(INC_DIR)/codexion.h $(INC_DIR)/scheduler.h
+SRCS_FILES  = main.c init.c simulation.c resources.c utils.c cleanup.c heap.c monitor.c
 
 SRCS        = $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 OBJS        = $(addprefix $(OBJS_DIR)/, $(SRCS_FILES:.c=.o))
@@ -18,7 +17,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
-$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(INCS_DIR)/codexion.h | $(OBJS_DIR)
 	$(CC) $(CFLAGS) -I $(INCS_DIR) -c $< -o $@
 
 $(OBJS_DIR):

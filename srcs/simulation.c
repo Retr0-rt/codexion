@@ -69,22 +69,3 @@ void *coder_routine(void *arg)
     }
     return (NULL);
 }
-
-void *monitoring_routine(void *arg)
-{
-    t_system *sys = (t_system *)arg;
-
-    // Let the simulation run freely for 3 seconds
-    ft_msleep(10000, sys);
-    // Flip the global kill switch
-    pthread_mutex_lock(&sys->state_mutex);
-    sys->stop_flag = 1;
-    pthread_mutex_unlock(&sys->state_mutex);
-
-    // Print the test conclusion
-    pthread_mutex_lock(&sys->log_mutex);
-    printf("--- DUMMY MONITOR: TEST FINISHED AFTER 3 SECONDS ---\n");
-    pthread_mutex_unlock(&sys->log_mutex);
-
-    return (NULL);
-}

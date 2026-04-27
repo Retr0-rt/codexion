@@ -17,7 +17,6 @@ int main(int ac, char **av)
         printf("Error: Initialization failed.\n");
         return (1);
     }
-
     // The main thread waits here until the simulation finishes
     cleanup_system(&sys);
 

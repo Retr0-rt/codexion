@@ -8,8 +8,8 @@
 # include <string.h>
 # include <unistd.h>
 
-# define SCHED_FIF 0
-# define SCHED_EDF  1
+# define FIFO 0
+# define EDF  1
 
 typedef struct s_coder	t_coder;
 

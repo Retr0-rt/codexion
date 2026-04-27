@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 09:36:54 by airkha            #+#    #+#             */
-/*   Updated: 2026/04/27 11:59:02 by airkha           ###   ########.fr       */
+/*   Updated: 2026/04/27 17:49:50 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int	init_system_args(t_system *sys, int ac, char **av)
 	sys->req_compiles = atoi(av[5]);
 	sys->dongle_cooldown = atoi(av[6]);
 	if (strcmp(av[7], "fifo") == 0)
-		sys->scheduler = SCHED_FIF;
+		sys->scheduler = FIFO;
 	else
-		sys->scheduler = SCHED_EDF;
+		sys->scheduler = EDF;
 	sys->ready_flag = 0;
 	return (0);
 }

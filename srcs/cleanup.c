@@ -19,7 +19,7 @@ void cleanup_system(t_system *sys)
     i = 0;
     while (i < sys->nb_coders)
     {
-        pthread_mutex_destroy(&sys->dongles[i]);
+        pthread_mutex_destroy(&sys->dongles[i].mutex);
         pthread_mutex_destroy(&sys->coders[i].coder_mutex);
         i++;
     }

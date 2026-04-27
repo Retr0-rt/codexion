@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 09:36:54 by airkha            #+#    #+#             */
-/*   Updated: 2026/04/25 23:48:19 by airkha           ###   ########.fr       */
+/*   Updated: 2026/04/27 01:23:10 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,17 @@ int	init_system_args(t_system *sys, int ac, char **av)
 int	init_mutexes(t_system *sys)
 {
 	int	i;
-
+	t_heap *queue;
+	
 	i = 0;
-	sys->dongles = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
+	sys->dongles = (t_dongle *)malloc(sizeof(t_dongle)
 			* sys->nb_coders);
+	queue = init_heap()
 	if (!sys->dongles)
 		return (-1);
 	while (i < sys->nb_coders)
 	{
-		if (pthread_mutex_init(sys->dongles + i, NULL) != 0)
+		if (pthread_mutex_init(&sys->dongles[i].mutex, NULL) != 0)
 			return (-1);
 		i++;
 	}

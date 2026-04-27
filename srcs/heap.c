@@ -6,12 +6,11 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 23:58:33 by airkha            #+#    #+#             */
-/*   Updated: 2026/04/27 00:05:32 by airkha           ###   ########.fr       */
+/*   Updated: 2026/04/27 01:14:42 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include "scheduler.h"
 
 void	swap_nodes(t_heap_node *node1, t_heap_node *node2)
 {
@@ -49,7 +48,7 @@ t_heap	*init_heap(int capacity)
 	return (heap);
 }
 
-int	heap_peak(t_heap *heap)
+int	heap_peek(t_heap *heap)
 {
 	if (heap->size == 0)
 		return (-1);
@@ -97,6 +96,7 @@ static void	bubble_down(t_heap *heap, int index)
 		index = smallest;
 	}
 }
+
 int	heap_pop(t_heap *heap)
 {
 	int	coder_id;

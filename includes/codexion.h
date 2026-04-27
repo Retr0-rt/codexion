@@ -13,7 +13,28 @@
 
 typedef struct s_coder	t_coder;
 
-/* The "God Struct" holding the entire simulation environment */
+/* --- heap implementation ---*/
+
+typedef struct s_heap_node {
+	int         coder_id;
+	long long   priority; // The time value used for sorting
+} t_heap_node;
+
+typedef struct s_heap {
+	t_heap_node *array;
+	int         size;
+	int         capacity;
+} t_heap;
+
+typedef struct s_dongle {
+	pthread_mutex_t mutex;          // Protects the queue and variables below
+	pthread_cond_t  cond;           // Where coders sleep while waiting
+	int             is_taken;       // 0 = free, 1 = taken
+	long long       available_at;   // Timestamp for when the cooldown expires
+	t_heap          *queue;         // The priority queue (your heap!)
+} t_dongle;
+
+/* The "Big Struct" holding the entire simulation environment */
 typedef struct s_system
 {
 	int					nb_coders;
@@ -32,7 +53,7 @@ typedef struct s_system
 	int finished_coders;  /* Tracks how many met req_compiles */
 	pthread_cond_t start_gun_cv;
 	/* --- 3. Shared Resource Mutexes --- */
-	pthread_mutex_t *dongles;      /* Array: one mutex per dongle */
+	t_dongle *dongles;      /* Array: one mutex per dongle */
 	pthread_mutex_t log_mutex;     /* Protects printf output */
 	pthread_mutex_t state_mutex; /* Protects reads/writes to stop_flag */
 
@@ -61,6 +82,14 @@ struct					s_coder
 
 	t_system *sys; /* Pointer back to the God Struct */
 };
+
+void	swap_nodes(t_heap_node *node1, t_heap_node *node2);
+void	destroy_node(t_heap_node *node);
+t_heap	*init_heap(int capacity);
+int	heap_peek(t_heap *heap);
+void	heap_push(t_heap *heap, int coder_id, long long priority);
+int	heap_pop(t_heap *heap);
+
 /* --- init.c --- */
 void					*coder_routine(void *arg);
 void					*monitoring_routine(void *arg);
@@ -81,6 +110,8 @@ void cleanup_system(t_system *sys);
 /* --- resources.c --- */
 void take_dongles(t_coder *coder);
 void drop_dongles(t_coder *coder);
+
+
 /* --- utils.c --- */
 long long get_relative_time(long long start_time);
 void ft_msleep(int time_to_sleep, t_system *sys);

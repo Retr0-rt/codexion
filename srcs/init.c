@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 09:36:54 by airkha            #+#    #+#             */
-/*   Updated: 2026/04/27 01:23:10 by airkha           ###   ########.fr       */
+/*   Updated: 2026/04/27 11:59:02 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,22 @@ int	init_system_args(t_system *sys, int ac, char **av)
 int	init_mutexes(t_system *sys)
 {
 	int	i;
-	t_heap *queue;
 	
 	i = 0;
 	sys->dongles = (t_dongle *)malloc(sizeof(t_dongle)
 			* sys->nb_coders);
-	queue = init_heap()
 	if (!sys->dongles)
 		return (-1);
 	while (i < sys->nb_coders)
 	{
-		if (pthread_mutex_init(&sys->dongles[i].mutex, NULL) != 0)
+		if (pthread_mutex_init(&sys->dongles[i].mutex, NULL) != 0
+			|| pthread_cond_init(&sys->dongles[i].cond, NULL) != 0)
+			return (-1);
+		sys->dongles[i].available_at = 0;
+		sys->dongles[i].is_taken = 0;
+		sys->dongles[i].queue = init_heap(2);
+		if (!sys->dongles[i].queue)
+			// check todo
 			return (-1);
 		i++;
 	}

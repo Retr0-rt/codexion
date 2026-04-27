@@ -13,10 +13,10 @@ void take_dongles(t_coder *coder)
 {
     if(coder->left_dongle_id < coder->right_dongle_id)
     {
-        pthread_mutex_lock(&coder->sys->dongles[coder->left_dongle_id]);
+        pthread_mutex_lock(&coder->sys->dongles[coder->left_dongle_id].mutex);
         log_taking_a_dongle(coder);
 
-        pthread_mutex_lock(&coder->sys->dongles[coder->right_dongle_id]);
+        pthread_mutex_lock(&coder->sys->dongles[coder->right_dongle_id].mutex);
         log_taking_a_dongle(coder);
     }
     else

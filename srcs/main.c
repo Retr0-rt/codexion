@@ -3,7 +3,6 @@
 int main(int ac, char **av)
 {
     t_system sys;
-
     // Codexion requires exactly 8 arguments after the program name
     // ./codexion [coders] [burnout] [compile] [debug] [refactor] [req_compiles] [cooldown] [scheduler]
     if (ac != 9)

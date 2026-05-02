@@ -59,7 +59,7 @@ void *coder_routine(void *arg)
 {
     t_coder *coder = (t_coder *)arg;
     wait_for_start(coder->sys);
-    if (coder->id % 2 == 0)
+    if (coder->id % 2 != 0)
         usleep(500);
     while (!safe_stop_check(coder->sys))
     {

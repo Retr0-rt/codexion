@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 18:54:17 by airkha            #+#    #+#             */
-/*   Updated: 2026/05/02 19:36:31 by airkha           ###   ########.fr       */
+/*   Updated: 2026/05/02 19:52:28 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	cleanup_system(t_system *sys)
 	int i;
 
 	i = 0;
+    pthread_join(sys->monitor_thread, NULL);
 	while (i < sys->nb_coders)
 	{
         pthread_mutex_lock(&sys->dongles[i].mutex);
@@ -31,7 +32,6 @@ void	cleanup_system(t_system *sys)
         sys->stop_flag = 1;
 		i++;
 	}
-	pthread_join(sys->monitor_thread, NULL);
 	free_all_mutexes_and_cond_vars(sys);
 	pthread_mutex_destroy(&sys->state_mutex);
 	pthread_mutex_destroy(&sys->log_mutex);

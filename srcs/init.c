@@ -80,7 +80,7 @@ int	init_coders(t_system *sys)
 		sys->coders[i].id = i + 1;
 		// we will give last_compile_start 0 for now since the coder didnt compile anytime and
 		// action_compile function will overwrite that 0
-		sys->coders[i].last_compile_start = 0; 
+		sys->coders[i].last_compile_start = 0;
 		sys->coders[i].left_dongle_id = i;
 		sys->coders[i].right_dongle_id = (i + 1) % sys->nb_coders;
 		sys->coders[i].sys = sys;

@@ -14,13 +14,13 @@
 
 void	cleanup_system(t_system *sys)
 {
-	int i;
+	int	i;
 
 	i = 0;
-    pthread_join(sys->monitor_thread, NULL);
+	pthread_join(sys->monitor_thread, NULL);
 	while (i < sys->nb_coders)
 	{
-        pthread_mutex_lock(&sys->dongles[i].mutex);
+		pthread_mutex_lock(&sys->dongles[i].mutex);
 		pthread_cond_broadcast(&sys->dongles[i].cond);
 		pthread_mutex_unlock(&sys->dongles[i].mutex);
 		i++;
@@ -28,8 +28,8 @@ void	cleanup_system(t_system *sys)
 	i = 0;
 	while (i < sys->nb_coders)
 	{
-        pthread_join(sys->coders[i].thread_id, NULL);
-        sys->stop_flag = 1;
+		pthread_join(sys->coders[i].thread_id, NULL);
+		sys->stop_flag = 1;
 		i++;
 	}
 	free_all_mutexes_and_cond_vars(sys);
@@ -40,11 +40,12 @@ void	cleanup_system(t_system *sys)
 	free(sys->coders);
 }
 
-void free_all_mutexes_and_cond_vars(t_system *sys){
-    int i;
+void	free_all_mutexes_and_cond_vars(t_system *sys)
+{
+	int i;
 
-    i = 0;
-    while (i < sys->nb_coders)
+	i = 0;
+	while (i < sys->nb_coders)
 	{
 		pthread_mutex_destroy(&sys->dongles[i].mutex);
 		pthread_cond_destroy(&sys->dongles[i].cond);

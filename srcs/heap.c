@@ -55,6 +55,13 @@ int	heap_peek(t_heap *heap)
 	return (heap->array[0].coder_id);
 }
 
+static int	has_higher_priority(t_heap_node *a, t_heap_node *b)
+{
+	if (a->priority != b->priority)
+		return (a->priority < b->priority);
+	return (a->coder_id < b->coder_id);
+}
+
 void	heap_push(t_heap *heap, int coder_id, long long priority)
 {
 	int	idx;
@@ -64,8 +71,8 @@ void	heap_push(t_heap *heap, int coder_id, long long priority)
 	idx = heap->size;
 	heap->array[idx].coder_id = coder_id;
 	heap->array[idx].priority = priority;
-	while (idx > 0 && heap->array[idx].priority < heap->array[(idx - 1)
-		/ 2].priority)
+	while (idx > 0 && has_higher_priority(&heap->array[idx],
+		&heap->array[(idx - 1) / 2]))
 	{
 		swap_nodes(&heap->array[idx], &heap->array[(idx - 1) / 2]);
 		idx = (idx - 1) / 2;
@@ -81,12 +88,11 @@ static void	bubble_down(t_heap *heap, int index)
 	{
 		smallest = index;
         
-		if ((index * 2 + 1) < heap->size && heap->array[index * 2
-			+ 1].priority < heap->array[smallest].priority)
+		if ((index * 2 + 1) < heap->size && has_higher_priority(
+			&heap->array[index * 2 + 1], &heap->array[smallest]))
 			smallest = index * 2 + 1;
-            
-		if ((index * 2 + 2) < heap->size && heap->array[index * 2
-			+ 2].priority < heap->array[smallest].priority)
+		if ((index * 2 + 2) < heap->size && has_higher_priority(
+			&heap->array[index * 2 + 2], &heap->array[smallest]))
 			smallest = index * 2 + 2;
             
 		if (smallest == index)

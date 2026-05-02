@@ -114,13 +114,19 @@ char	**parse_args(int ac, char **av)
 	while (i < 7)
 	{
 		if (!is_valid_positive_int(parsed[i]))
-			return (fprintf(stderr, "Error: argument %d is not a valid"
-					" positive integer\n", i + 1),
-				free_parsed_args(parsed), NULL);
+			return (fprintf(stderr,
+							"Error: argument %d is not a valid"
+							" positive integer\n",
+							i + 1),
+					free_parsed_args(parsed),
+					NULL);
 		i++;
 	}
 	if (!validate_scheduler(parsed[7]))
-		return (fprintf(stderr, "Error: scheduler must be 'fifo'"
-				" or 'edf'\n"), free_parsed_args(parsed), NULL);
+		return (fprintf(stderr,
+						"Error: scheduler must be 'fifo'"
+						" or 'edf'\n"),
+				free_parsed_args(parsed),
+				NULL);
 	return (parsed);
 }

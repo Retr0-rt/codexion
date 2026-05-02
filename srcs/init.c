@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 09:36:54 by airkha            #+#    #+#             */
-/*   Updated: 2026/04/27 22:53:17 by airkha           ###   ########.fr       */
+/*   Updated: 2026/05/02 19:22:04 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,9 @@ int	init_system_args(t_system *sys, int ac, char **av)
 int	init_mutexes(t_system *sys)
 {
 	int	i;
-	
+
 	i = 0;
-	sys->dongles = (t_dongle *)malloc(sizeof(t_dongle)
-			* sys->nb_coders);
+	sys->dongles = (t_dongle *)malloc(sizeof(t_dongle) * sys->nb_coders);
 	if (!sys->dongles)
 		return (-1);
 	while (i < sys->nb_coders)
@@ -79,10 +78,9 @@ int	init_coders(t_system *sys)
 		if (pthread_mutex_init(&sys->coders[i].coder_mutex, NULL) != 0)
 			return (-1);
 		sys->coders[i].id = i + 1;
-		// we will give last_compile_start 0 for now since the coder didnt compile anytime and 
+		// we will give last_compile_start 0 for now since the coder didnt compile anytime and
 		// action_compile function will overwrite that 0
-		sys->coders[i].last_compile_start = 0; //currrent_timestamp.tv_sec * 1000
-			// + currrent_timestamp.tv_usec / 1000;
+		sys->coders[i].last_compile_start = 0; 
 		sys->coders[i].left_dongle_id = i;
 		sys->coders[i].right_dongle_id = (i + 1) % sys->nb_coders;
 		sys->coders[i].sys = sys;
@@ -94,7 +92,7 @@ int	init_coders(t_system *sys)
 
 int	start_simulation(t_system *sys)
 {
-	int				i;
+	int	i;
 
 	i = 0;
 	while (i < sys->nb_coders)
@@ -110,7 +108,6 @@ int	start_simulation(t_system *sys)
 	sys->ready_flag = 1;
 	pthread_cond_broadcast(&sys->start_gun_cv);
 	pthread_mutex_unlock(&sys->state_mutex);
-	
 	if (pthread_create(&sys->monitor_thread, NULL, &monitoring_routine,
 			(void *)sys))
 		return (-1);

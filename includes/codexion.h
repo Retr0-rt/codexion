@@ -107,6 +107,7 @@ void *coder_routine(void *arg);
 void *monitoring_routine(void *arg);
 /* --- cleanup.c --- */
 void cleanup_system(t_system *sys);
+void free_all_mutexes_and_cond_vars(t_system *sys);
 /* --- resources.c --- */
 void take_dongles(t_coder *coder);
 void drop_dongles(t_coder *coder);

@@ -19,8 +19,8 @@
 */
 int	main(int ac, char **av)
 {
-	t_system	sys;
-	char		**parsed;
+	t_system sys;
+	char **parsed;
 
 	parsed = parse_args(ac - 1, av + 1);
 	if (!parsed)

@@ -39,23 +39,47 @@ void acquire_dongle(t_coder *coder, t_dongle *dongle)
 }
 void take_dongles(t_coder *coder)
 {
-    t_dongle *low_id_dongle;
-    t_dongle *high_id_dongle;
-    if(coder->left_dongle_id < coder->right_dongle_id)
+    t_dongle *first_dongle;
+    t_dongle *second_dongle;
+
+    if (coder->id % 2 == 0)
     {
-        low_id_dongle = &coder->sys->dongles[coder->left_dongle_id];
-        high_id_dongle = &coder->sys->dongles[coder->right_dongle_id];
+        first_dongle = &coder->sys->dongles[coder->right_dongle_id];
+        second_dongle = &coder->sys->dongles[coder->left_dongle_id];
     }
     else
     {
-        low_id_dongle = &coder->sys->dongles[coder->right_dongle_id];
-        high_id_dongle = &coder->sys->dongles[coder->left_dongle_id];
+        first_dongle = &coder->sys->dongles[coder->left_dongle_id];
+        second_dongle = &coder->sys->dongles[coder->right_dongle_id];
     }
-    acquire_dongle(coder, low_id_dongle);
+    
+    acquire_dongle(coder, first_dongle);
     if (safe_stop_check(coder->sys))
         return ;
-    acquire_dongle(coder, high_id_dongle);
+    acquire_dongle(coder, second_dongle);
 }
+
+/* Dijkstra implementation */
+
+// void take_dongles(t_coder *coder)
+// {
+//     t_dongle *low_id_dongle;
+//     t_dongle *high_id_dongle;
+//     if(coder->left_dongle_id < coder->right_dongle_id)
+//     {
+//         low_id_dongle = &coder->sys->dongles[coder->left_dongle_id];
+//         high_id_dongle = &coder->sys->dongles[coder->right_dongle_id];
+//     }
+//     else
+//     {
+//         low_id_dongle = &coder->sys->dongles[coder->right_dongle_id];
+//         high_id_dongle = &coder->sys->dongles[coder->left_dongle_id];
+//     }
+//     acquire_dongle(coder, low_id_dongle);
+//     if (safe_stop_check(coder->sys))
+//         return ;
+//     acquire_dongle(coder, high_id_dongle);
+// }
 
 void release_dongle(t_coder *coder, t_dongle *dongle)
 {

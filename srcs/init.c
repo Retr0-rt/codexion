@@ -19,7 +19,7 @@
 // fifo or edf
 int	init_system_args(t_system *sys, int ac, char **av)
 {
-	ac = 0;
+	(void)ac;
 	sys->nb_coders = atoi(av[0]);
 	sys->time_to_burnout = atoi(av[1]);
 	sys->time_to_compile = atoi(av[2]);

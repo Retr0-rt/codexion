@@ -117,4 +117,11 @@ long long get_relative_time(long long start_time);
 void ft_msleep(int time_to_sleep, t_system *sys);
 void wait_for_start(t_system *sys);
 
+/* --- parser.c --- */
+char	**parse_args(int ac, char **av);
+void	free_parsed_args(char **args);
+
+/* --- ft_trim.c --- */
+char	*ft_trim(const char *str);
+
 #endif

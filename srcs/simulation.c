@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 18:54:06 by airkha            #+#    #+#             */
-/*   Updated: 2026/05/02 18:54:07 by airkha           ###   ########.fr       */
+/*   Updated: 2026/05/03 00:27:04 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	action_compile(t_coder *coder)
 	coder->compiles_done++;
 	pthread_mutex_unlock(&coder->coder_mutex);
 	pthread_mutex_lock(&coder->sys->log_mutex);
-	// no coder can print any logs after someone burnout
 	if (!safe_stop_check(coder->sys))
 		printf("%lld %d is compiling\n", relative_time, coder->id);
 	pthread_mutex_unlock(&coder->sys->log_mutex);

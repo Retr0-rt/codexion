@@ -6,29 +6,11 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 23:58:33 by airkha            #+#    #+#             */
-/*   Updated: 2026/04/27 01:14:42 by airkha           ###   ########.fr       */
+/*   Updated: 2026/05/03 00:51:32 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
-void	swap_nodes(t_heap_node *node1, t_heap_node *node2)
-{
-	t_heap_node	temp;
-
-	temp.coder_id = node1->coder_id;
-	temp.priority = node1->priority;
-	node1->coder_id = node2->coder_id;
-	node1->priority = node2->priority;
-	node2->coder_id = temp.coder_id;
-	node2->priority = temp.priority;
-}
-
-void	destroy_node(t_heap_node *node)
-{
-	node->coder_id = 0;
-	node->priority = -1;
-}
 
 t_heap	*init_heap(int capacity)
 {
@@ -55,13 +37,6 @@ int	heap_peek(t_heap *heap)
 	return (heap->array[0].coder_id);
 }
 
-static int	has_higher_priority(t_heap_node *a, t_heap_node *b)
-{
-	if (a->priority != b->priority)
-		return (a->priority < b->priority);
-	return (a->coder_id < b->coder_id);
-}
-
 void	heap_push(t_heap *heap, int coder_id, long long priority)
 {
 	int	idx;
@@ -71,8 +46,8 @@ void	heap_push(t_heap *heap, int coder_id, long long priority)
 	idx = heap->size;
 	heap->array[idx].coder_id = coder_id;
 	heap->array[idx].priority = priority;
-	while (idx > 0 && has_higher_priority(&heap->array[idx], &heap->array[(idx
-				- 1) / 2]))
+	while (idx > 0 && has_higher_priority(&heap->array[idx],
+			&heap->array[(idx - 1) / 2]))
 	{
 		swap_nodes(&heap->array[idx], &heap->array[(idx - 1) / 2]);
 		idx = (idx - 1) / 2;

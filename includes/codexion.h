@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 19:57:27 by airkha            #+#    #+#             */
-/*   Updated: 2026/05/02 20:11:30 by airkha           ###   ########.fr       */
+/*   Updated: 2026/05/03 00:37:19 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ struct					s_coder
 	t_system			*sys;
 };
 
+/* --- heap_utils.c --- */
 void					swap_nodes(t_heap_node *node1, t_heap_node *node2);
 void					destroy_node(t_heap_node *node);
 t_heap					*init_heap(int capacity);
@@ -95,6 +96,7 @@ int						heap_peek(t_heap *heap);
 void					heap_push(t_heap *heap, int coder_id,
 							long long priority);
 int						heap_pop(t_heap *heap);
+int						has_higher_priority(t_heap_node *a, t_heap_node *b);
 
 /* --- init.c --- */
 void					*coder_routine(void *arg);
@@ -111,9 +113,12 @@ void					action_debug(t_coder *coder);
 void					action_refactor(t_coder *coder);
 void					*coder_routine(void *arg);
 void					*monitoring_routine(void *arg);
+
 /* --- cleanup.c --- */
 void					cleanup_system(t_system *sys);
 void					free_all_mutexes_and_cond_vars(t_system *sys);
+void					free_parsed_args(char **args);
+
 /* --- resources.c --- */
 void					take_dongles(t_coder *coder);
 void					drop_dongles(t_coder *coder);

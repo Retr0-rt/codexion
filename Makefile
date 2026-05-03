@@ -7,8 +7,7 @@ SRCS_DIR    = srcs
 INCS_DIR    = includes
 OBJS_DIR    = objs
 
-SRCS_FILES  = main.c init.c simulation.c resources.c utils.c cleanup.c heap.c \
-              monitor.c parser.c ft_trim.c
+SRCS_FILES  = main.c init.c simulation.c resources.c utils.c cleanup.c heap.c monitor.c parser.c ft_trim.c heap_utils.c
 
 SRCS        = $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 OBJS        = $(addprefix $(OBJS_DIR)/, $(SRCS_FILES:.c=.o))

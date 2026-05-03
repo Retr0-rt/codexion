@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 18:54:12 by airkha            #+#    #+#             */
-/*   Updated: 2026/05/02 18:54:13 by airkha           ###   ########.fr       */
+/*   Updated: 2026/05/02 23:29:04 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ void	ft_msleep(int time_to_sleep, t_system *sys)
 	start_time = get_relative_time(0);
 	while ((get_relative_time(0) - start_time) < time_to_sleep)
 	{
-		/* 1. Check if the simulation has been killed */
 		if (safe_stop_check(sys))
 			break ;
-		/* 2. Micro-sleep to prevent 100% CPU core hijacking */
 		usleep(500);
 	}
 }

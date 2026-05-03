@@ -6,11 +6,27 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 18:54:17 by airkha            #+#    #+#             */
-/*   Updated: 2026/05/02 19:52:28 by airkha           ###   ########.fr       */
+/*   Updated: 2026/05/03 00:35:47 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+void	free_parsed_args(char **args)
+{
+	int	i;
+
+	if (!args)
+		return ;
+	i = 0;
+	while (i < 8)
+	{
+		if (args[i])
+			free(args[i]);
+		i++;
+	}
+	free(args);
+}
 
 void	cleanup_system(t_system *sys)
 {
@@ -42,7 +58,7 @@ void	cleanup_system(t_system *sys)
 
 void	free_all_mutexes_and_cond_vars(t_system *sys)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < sys->nb_coders)

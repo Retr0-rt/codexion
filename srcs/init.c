@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 09:36:54 by airkha            #+#    #+#             */
-/*   Updated: 2026/05/02 19:22:04 by airkha           ###   ########.fr       */
+/*   Updated: 2026/05/02 23:53:33 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	init_mutexes(t_system *sys)
 		sys->dongles[i].is_taken = 0;
 		sys->dongles[i].queue = init_heap(2);
 		if (!sys->dongles[i].queue)
-			// check todo
 			return (-1);
 		i++;
 	}
@@ -78,8 +77,6 @@ int	init_coders(t_system *sys)
 		if (pthread_mutex_init(&sys->coders[i].coder_mutex, NULL) != 0)
 			return (-1);
 		sys->coders[i].id = i + 1;
-		// we will give last_compile_start 0 for now since the coder didnt compile anytime and
-		// action_compile function will overwrite that 0
 		sys->coders[i].last_compile_start = 0;
 		sys->coders[i].left_dongle_id = i;
 		sys->coders[i].right_dongle_id = (i + 1) % sys->nb_coders;

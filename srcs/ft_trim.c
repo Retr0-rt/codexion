@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 17:25:00 by airkha            #+#    #+#             */
-/*   Updated: 2026/05/02 18:54:25 by airkha           ###   ########.fr       */
+/*   Updated: 2026/05/02 23:40:34 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,26 @@ static int	ft_isspace(char c)
 ** whitespace removed.  Returns NULL on allocation failure.
 ** The caller is responsible for freeing the returned string.
 */
+
+void	fill_trimmed(char *trimmed, const char *src, int start, int len)
+{
+	int	i;
+
+	i = 0;
+	while (i < len)
+	{
+		trimmed[i] = src[start + i];
+		i++;
+	}
+	trimmed[i] = '\0';
+}
+
 char	*ft_trim(const char *str)
 {
 	int		start;
 	int		end;
 	int		len;
 	char	*trimmed;
-	int		i;
 
 	if (!str)
 		return (NULL);
@@ -43,12 +56,6 @@ char	*ft_trim(const char *str)
 	trimmed = (char *)malloc(sizeof(char) * (len + 1));
 	if (!trimmed)
 		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		trimmed[i] = str[start + i];
-		i++;
-	}
-	trimmed[i] = '\0';
+	fill_trimmed(trimmed, str, start, len);
 	return (trimmed);
 }

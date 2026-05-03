@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 17:25:00 by airkha            #+#    #+#             */
-/*   Updated: 2026/05/02 17:25:00 by airkha           ###   ########.fr       */
+/*   Updated: 2026/05/02 23:56:10 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 */
 int	main(int ac, char **av)
 {
-	t_system sys;
-	char **parsed;
+	t_system	sys;
+	char		**parsed;
 
 	parsed = parse_args(ac - 1, av + 1);
 	if (!parsed)

@@ -1,7 +1,7 @@
 NAME        = codexion
 
 CC          = cc
-CFLAGS      = -Wall -Wextra -Werror -g -pthread
+CFLAGS      = -Wall -Wextra -Werror -pthread
 
 SRCS_DIR    = srcs
 INCS_DIR    = includes

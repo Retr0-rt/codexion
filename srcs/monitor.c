@@ -6,7 +6,7 @@
 /*   By: airkha <airkha@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 18:53:54 by airkha            #+#    #+#             */
-/*   Updated: 2026/05/02 23:29:59 by airkha           ###   ########.fr       */
+/*   Updated: 2026/05/03 16:15:57 by airkha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,12 @@ void	*monitoring_routine(void *arg)
 	t_system	*sys;
 
 	sys = (t_system *)arg;
+	wait_for_start(sys);
 	while (1)
 	{
 		if (is_someone_burned_out(sys) || won(sys))
 			break ;
-		usleep(300);
+		usleep(5);
 	}
 	return (NULL);
 }
